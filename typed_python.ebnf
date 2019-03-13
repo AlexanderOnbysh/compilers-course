@@ -18,6 +18,7 @@ Expression	::=
 	| Expression '*' Expression
 	| Expression '/' Expression
 	| Expression '**' Expression
+	| Expression '%' Expression
 	| Expression 'and' Expression
 	| Expression 'or' Expression
 	| 'not' Expression
