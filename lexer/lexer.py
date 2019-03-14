@@ -196,6 +196,12 @@ class Lexer:
                 self.make_step()
                 return Token(SUB_OP, '-')
 
+            if self.current_char == '*' and \
+                    self.ahead(1) == '*':
+                self.make_step()
+                self.make_step()
+                return Token(POWER_OP, '**')
+
             if self.current_char == '*':
                 self.make_step()
                 return Token(MUL_OP, '*')
