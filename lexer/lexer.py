@@ -11,10 +11,12 @@ RESERVED_KEYWORDS = {
     'int': Token(INT, 'int'),
     'float': Token(FLOAT, 'float'),
     'void': Token(VOID, 'void'),
+    'bool': Token(BOOL, 'bool'),
     'True': Token(TRUE, 'True'),
     'False': Token(FALSE, 'False'),
 
     'if': Token(IF, 'if'),
+    'elif': Token(ELIF, 'elif'),
     'else': Token(ELSE, 'else'),
     'for': Token(FOR, 'for'),
     'while': Token(WHILE, 'while'),
