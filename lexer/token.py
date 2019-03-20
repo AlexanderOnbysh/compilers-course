@@ -18,5 +18,8 @@ class Token(object):
             value=repr(self.value)
         )
 
+    def __eq__(self, other: str):
+        return self.type == other
+
     def __repr__(self):
         return self.__str__()
