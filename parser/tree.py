@@ -114,10 +114,11 @@ class CompoundStmt(Node):
 
 
 class VarDecl(Node):
-    def __init__(self, var_node, type_node, line):
+    def __init__(self, var_node, type_node, line, value=None):
         Node.__init__(self, line)
         self.var_node = var_node
         self.type_node = type_node
+        self.value = value
 
 
 class Param(Node):
