@@ -1,6 +1,6 @@
 """ SCI - Simple C Interpreter """
 from .keywords import *
-from .token import Token
+from .lexer_token import Token
 
 RESERVED_KEYWORDS = {
     'def': Token(DEF_FUC, 'def'),
@@ -132,6 +132,11 @@ class Lexer:
 
         while self.current_char is not None:
 
+            if self.current_char == '\n':
+                self.line += 1
+                self.make_step()
+                return Token(EOL, '\n')
+
             if self.current_char.isspace():
                 self.skip_whitespace()
                 continue
@@ -141,7 +146,7 @@ class Lexer:
                 continue
 
             if self.current_char == '-' and \
-                self.ahead(1) == '>':
+                    self.ahead(1) == '>':
                 self.make_step()
                 self.make_step()
                 return Token(RETURN_FUNC, '->')
@@ -223,6 +228,14 @@ class Lexer:
             if self.current_char == ')':
                 self.make_step()
                 return Token(RPAREN, ')')
+
+            if self.current_char == '[':
+                self.make_step()
+                return Token(LSQUARE, '[')
+
+            if self.current_char == ']':
+                self.make_step()
+                return Token(RSQUARE, ']')
 
             if self.current_char == ';':
                 self.make_step()
