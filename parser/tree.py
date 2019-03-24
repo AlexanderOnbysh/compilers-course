@@ -1,159 +1,136 @@
+from typing import Union, List
+
+from dataclasses import dataclass
+
+from lexer.lexer_token import Token
+
+
+@dataclass
 class Node:
-    def __init__(self, line):
-        self.line = line
+    line: int
 
 
+@dataclass
 class NoOp(Node): ...
 
 
+@dataclass
 class Num(Node):
-    def __init__(self, token, line):
-        Node.__init__(self, line)
-        self.token = token
-        self.value = token.value
+    token: Token
+    value: Union[int, float, str, bool]
 
 
+@dataclass
 class String(Node):
-    def __init__(self, token, line):
-        Node.__init__(self, line)
-        self.token = token
-        self.value = token.value
+    token: Token
 
 
+@dataclass
 class Type(Node):
-    def __init__(self, token, line):
-        Node.__init__(self, line)
-        self.token = token
-        self.value = token.value
+    token: Token
 
 
+@dataclass
 class Var(Node):
-    def __init__(self, token, line):
-        Node.__init__(self, line)
-        self.token = token
-        self.value = token.value
+    token: Token
 
 
+@dataclass
 class BinOp(Node):
-    def __init__(self, left, op, right, line):
-        Node.__init__(self, line)
-        self.left = left
-        self.token = self.op = op
-        self.right = right
+    left: Node
+    op: Token
+    right: Node
 
 
+@dataclass
 class UnOp(Node):
-    def __init__(self, op, expr, line, prefix=True):
-        Node.__init__(self, line)
-        self.token = self.op = op
-        self.expr = expr
-        self.prefix = prefix
+    token: Token
+    expr: Node
+    prefix: Token
 
 
+@dataclass
 class Assign(Node):
-    def __init__(self, left, op, right, line):
-        Node.__init__(self, line)
-        self.left = left
-        self.token = self.op = op
-        self.right = right
+    left: Token
+    token: Token
 
 
+@dataclass
 class Expression(Node):
-    def __init__(self, children, line):
-        Node.__init__(self, line)
-        self.children = children
+    children: Node
 
 
+@dataclass
 class FunctionCall(Node):
-    def __init__(self, name, args, line):
-        Node.__init__(self, line)
-        self.name = name
-        self.args = args  # a list of Param nodes
+    name: Token
+    args: List[Node]
 
 
+@dataclass
 class IfStmt(Node):
-    def __init__(self, condition, tbody, line, fbody=None):
-        Node.__init__(self, line)
-        self.condition = condition
-        self.tbody = tbody
-        self.fbody = fbody
+    condition: Node
+    tbody: Node
+    fbody: Node
 
 
+@dataclass
 class WhileStmt(Node):
-    def __init__(self, condition, body, line):
-        Node.__init__(self, line)
-        self.condition = condition
-        self.body = body
+    condition: Node
+    body: Node
 
 
+@dataclass
 class ReturnStmt(Node):
-    def __init__(self, expression, line):
-        Node.__init__(self, line)
-        self.expression = expression
+    expression: Node
 
 
+@dataclass
 class BreakStmt(Node): ...
 
 
+@dataclass
 class ContinueStmt(Node): ...
 
 
+@dataclass
 class ForStmt(Node):
-    def __init__(self, setup, condition, increment, body, line):
-        Node.__init__(self, line)
-        self.setup = setup
-        self.condition = condition
-        self.increment = increment
-        self.body = body
+    setup: Node
+    condition: Node
+    increment: Node
+    body: Node
 
 
+@dataclass
 class CompoundStmt(Node):
-    def __init__(self, children, line):
-        Node.__init__(self, line)
-        self.children = children
+    children: Node
 
 
+@dataclass
 class VarDecl(Node):
-    def __init__(self, var_node, type_node, line, value=None):
-        Node.__init__(self, line)
-        self.var_node = var_node
-        self.type_node = type_node
-        self.value = value
+    var_node: Node
+    type_node: Node
+    value: Union[int, str, bool, float] = None
 
 
+@dataclass
 class Param(Node):
-    def __init__(self, type_node, var_node, line):
-        Node.__init__(self, line)
-        self.var_node = var_node
-        self.type_node = type_node
+    type_node: Node
+    var_node: Node
 
 
+@dataclass
 class FunctionDecl(Node):
-    def __init__(self, type_node, func_name, params, body, line):
-        Node.__init__(self, line)
-        self.type_node = type_node
-        self.func_name = func_name
-        self.params = params  # a list of Param nodes
-        self.body = body
+    type_node: Node
+    func_name: Token
+    params: List[Node]
+    body: Node
 
 
+@dataclass
 class FunctionBody(Node):
-    def __init__(self, children, line):
-        Node.__init__(self, line)
-        self.children = children
+    children: Node
 
 
+@dataclass
 class Program(Node):
-    def __init__(self, declarations, line):
-        Node.__init__(self, line)
-        self.children = declarations
-
-
-class NodeVisitor(object):
-    def visit(self, node):
-        method_name = 'visit_' + type(node).__name__
-        visitor = getattr(self, method_name, self.generic_visit)
-        return visitor(node)
-
-    def generic_visit(self, node):
-        raise Exception('No visit_{} method'.format(type(node).__name__))
+    declarations: Node
