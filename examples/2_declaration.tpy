@@ -1,0 +1,7 @@
+def main() -> int: begin
+    a: int = 5
+    b: char = 'a'
+    c: string = "test string"
+
+    return a
+end
